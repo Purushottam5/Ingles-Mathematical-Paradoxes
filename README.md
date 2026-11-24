@@ -1,33 +1,81 @@
-# Ingle's Mathematical Paradoxes 🌌
-**Advanced Theoretical Frameworks for AI Safety, Cyber Defense, and Cryptography**
+# Ingle's Mathematical Paradoxes
 
-**Author & Lead Researcher:** Purushottam Dnyaneshwar Ingle (Independent Researcher)
+Experiments in using mathematical ideas (Zeno's paradox, Collatz trees,
+non-linear sequences, repeated squaring) to make attacks more costly.
 
-## 📌 Overview
-This repository contains five groundbreaking computational models derived from pure mathematical paradoxes, first-principles thinking, and information theory. Designed by an independent researcher, these frameworks offer highly advanced, active-defense solutions for modern Cybersecurity, Cryptography, and AI Safety (AGI Containment).
+**Author:** Purushottam Dnyaneshwar Ingle (independent learner)
 
-## 🚀 The Five Master Projects
+## ⚠️ Read this first
 
-### 1. The Infinite Decimal Tarpit (AI & Hacker Honeypot)
-* **Concept:** Utilizes Zeno's Paradox (the infinite continuum between two integers) to create an algorithmic tarpit. 
-* **Application:** Traps automated brute-force bots and rogue AI in an asymptotic loop. As the bot tries to reach the target, the decimal expands infinitely, causing complete CPU/RAM resource exhaustion and system crash.
+- This repository is for **learning and experimentation**.
+- **Do not use any of this code to protect real data.**
+- No claim of "unbreakable" or "quantum-proof" security is made. Such claims
+  are not proven for any code here.
+- The original scripts (1, 3, 4, 5) are early prototypes. They only run
+  locally and print their own messages; they do not interact with, trap, or
+  harm any attacker. Their output messages describe intended behaviour, not
+  verified behaviour.
 
-### 2. Irreversible Number Partitioning (The Top-Down Entropy Model)
-* **Concept:** Expanding a number into mathematically context-less fractions. 
-* **Application:** A cognitive blinding tool for AI. By feeding only a fragmented piece to an unauthorized AI, it becomes mathematically impossible for the AI to reverse-engineer the original data source.
+## Original prototypes (kept for history)
 
-### 3. Collatz Structural Dynamics (Cryptography & Compression)
-* **Concept:** Applying an inverted tree and Diophantine equation to the Collatz conjecture.
-* **Application:** Highly secure algorithmic data encryption and structural mapping for lossless data architecture.
+| File | Idea | Known problems |
+|------|------|----------------|
+| `1_Infinite_Decimal_Tarpit.py` | Zeno-style halving loop | Closed form `target·(1−2⁻ⁿ)` skips the loop entirely |
+| `3_Collatz_Blackhole_Encryption.py` | Recursive inverted Collatz tree | Not encryption (no key/data); recursion has no base case and can crash your own process |
+| `4_Non_Linear_Sequence_Hashing.py` | Multi-step "hash" | Not a hash (no input, random output); uses `random`; `is_prime` is wrong; intermediate values reveal the seed |
+| `5_Polymorphic_Poison_Pill_Trap.py` | `(C-1)²` growth | Defender pays the same cost as the attacker; "key" is `2·step`, authenticates nothing |
 
-### 4. Recursive Intelligence Explosion Simulator
-* **Concept:** Mathematical modeling of AI's hyper-exponential growth using thermodynamic and game-theoretic principles.
-* **Application:** AI Safety benchmarking tool to calculate the exact threshold where an AI model escapes human containment.
+## Improved versions
 
-### 5. Time-Variant Polymorphic Ratcheting with Poison-Pill AI Trap
-* **Concept:** A dynamic state-shifting algorithm where the mathematical constant (e.g., Target = 10) expands polymorphically, shifts non-linearly using a $(C-1)^2$ formulation after specific intervals, and incorporates parity-check logic (Even-number hidden keys).
-* **Application:** An active Cyber Defense system. It forces AI into resource exhaustion while presenting a "Poison Pill" equation. If the AI uses pattern recognition to bypass the calculation, the system instantly detects the non-human behavior and blocks the IP.
+| File | What it does |
+|------|--------------|
+| `proof_of_work_guard.py` | SHA-256 proof-of-work with HMAC-signed challenges, expiry, replay protection and adaptive difficulty |
+| `login_server.py` | Flask login endpoint guarded by the proof-of-work |
+| `timelock_guard.py` | Repeated-squaring time-lock puzzle (`y = x^(2^T) mod N`): sequential work that extra cores/GPUs do not speed up |
+| `login_server_timelock.py` | Flask login endpoint guarded by the time-lock puzzle |
 
-## ⚖️ License and Citation (MIT License)
-This project is open-source. However, any individual, academic institution, or corporation utilizing these concepts, algorithms, or codes MUST provide proper attribution to the original author.
-**Citation:** Ingle, Purushottam Dnyaneshwar. *Ingle's Mathematical Paradoxes*. GitHub. 
+### Measured results (one machine, indicative only)
+
+- Zeno loop vs closed form (3000 steps): ~9.3 ms vs ~0.009 ms.
+- Proof-of-work, 16 bits: solve ~0.06 s, verify ~0.04 ms.
+- Time-lock, T = 37,354 squarings: client ~0.31 s, server ~20 ms.
+- 200,000 squarings mod N: ~0.49 s without the secret, ~3 ms with it.
+
+## Limitations
+
+- Time-lock security rests on an **unproven assumption**: repeated squaring in
+  a group of unknown order cannot be sped up without the factorization of N.
+- If the server's secret primes leak, the time-lock protection is gone.
+- The time-lock version here is privately verifiable (only the server can
+  check answers).
+- These are cost-raising layers against automated abuse. They do **not**
+  replace encryption, password hashing (use Argon2), HTTPS, rate limiting or
+  account lockout.
+- Demo state (used nonces, request counts, user store) lives in memory.
+
+## Prior work
+
+The time-lock idea is not new. It was introduced by Rivest, Shamir and Wagner
+(1996) and later extended into verifiable delay functions by Pietrzak and by
+Wesolowski (2018). Hashcash and Dwork–Naor "pricing functions" are earlier
+forms of proof-of-work. This repository applies and explores these ideas; it
+does not claim to have invented them.
+
+## Run
+
+```bash
+pip install flask
+python3 proof_of_work_guard.py          # PoW demo
+python3 login_server.py                 # PoW login self-test
+python3 timelock_guard.py               # time-lock demo
+python3 login_server_timelock.py        # time-lock login self-test
+```
+
+---
+
+## मराठी सारांश
+
+हे रेपॉझिटरी **शिकण्यासाठी आणि प्रयोगांसाठी** आहे. यातील कोड खऱ्या
+डेटाच्या संरक्षणासाठी वापरू नका. "अभेद्य" किंवा "क्वांटम-प्रूफ" असा कोणताही
+दावा येथे सिद्ध केलेला नाही. जुन्या फाइल्स (1, 3, 4, 5) सुरुवातीचे प्रोटोटाइप
+आहेत; सुधारलेल्या आवृत्त्या वर दिल्या आहेत.
